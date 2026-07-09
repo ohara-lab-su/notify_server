@@ -309,9 +309,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """通知サーバーを起動する。"""
-    os.environ["NOTIFY_TOKEN"] = "password8801"
+    os.environ["NOTIFY_TOKEN"] = "任意のアクセストークン"
     os.environ["NOTIFY_BACKEND"] = "mail_client"
     os.environ["NOTIFY_MAIL_CLIENT"] = "mail"
+    # os.environ["NOTIFY_MAIL_CLIENT"] = "outlook"
     os.environ["MAIL_TO"] = "kengo.nakada@mat.shimane-u.ac.jp"
 
     args = parse_args()

@@ -40,8 +40,14 @@ class ClientConfig(object):
 
     def __init__(self) -> None:
         """環境変数から通知先 URL と共有トークンを読み込む。"""
-        self.server_url = os.environ.get("NOTIFY_SERVER_URL", "")
-        self.token = os.environ.get("NOTIFY_TOKEN", "")
+        self.server_url = os.environ.get(
+            "NOTIFY_SERVER_URL",
+            "",
+        )
+        self.token = os.environ.get(
+            "NOTIFY_TOKEN",
+            "",
+        )
 
     def validate(self) -> None:
         """通知送信に必要な設定を検査する。"""
@@ -52,7 +58,11 @@ class ClientConfig(object):
             raise RuntimeError("NOTIFY_TOKEN is not set")
 
 
-def notify(config: ClientConfig, title: str, body: str) -> None:
+def notify(
+    config: ClientConfig,
+    title: str,
+    body: str,
+) -> None:
     """通知サーバーへ title/body を送信する。"""
     config.validate()
 
@@ -96,7 +106,7 @@ def main() -> None:
     config = ClientConfig()
 
     config.server_url = "http://127.0.0.1:8000/notify"
-    config.token = "password8801"
+    config.token = "任意のアクセストークン"
 
     notify(config, args.title, args.body)
 
