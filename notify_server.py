@@ -313,7 +313,7 @@ def main() -> None:
     os.environ["NOTIFY_BACKEND"] = "mail_client"
     os.environ["NOTIFY_MAIL_CLIENT"] = "mail"
     # os.environ["NOTIFY_MAIL_CLIENT"] = "outlook"
-    os.environ["MAIL_TO"] = "kengo.nakada@mat.shimane-u.ac.jp"
+    os.environ["MAIL_TO"] = "your_account@example.com"
 
     args = parse_args()
     uvicorn.run(
