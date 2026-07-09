@@ -268,7 +268,8 @@ def send_notification(
 
 @app.post("/notify")
 def notify(
-    message: NotifyMessage, x_notify_token: str = Header(default="")
+    message: NotifyMessage,
+    x_notify_token: str = Header(default=""),
 ) -> Dict[str, Any]:
     """通知要求を受け取り、認証後に指定された方式で通知する。"""
     config = get_config()
