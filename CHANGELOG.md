@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.1
+
+- LICENSE 追加
+
 ## v0.1.0
 
 v0.0.0 の REST 通知方式を維持しながら、Python
