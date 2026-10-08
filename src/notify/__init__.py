@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""notify public API."""
 
-from .client import NotifyClient, notify
+from .client import NotifyClient, configure, notify
 
-__version__ = "0.1.0"
-__all__ = ["NotifyClient", "notify"]
+__all__ = ["NotifyClient", "configure", "notify"]

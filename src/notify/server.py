@@ -6,7 +6,7 @@ import platform
 import smtplib
 import subprocess
 from email.mime.text import MIMEText
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import uvicorn
 from fastapi import FastAPI, Header, HTTPException
@@ -16,6 +16,7 @@ DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
 
 app = FastAPI(title="Notify Server")
+_server_config = None
 
 
 class NotifyMessage(BaseModel):
@@ -24,17 +25,44 @@ class NotifyMessage(BaseModel):
 
 
 class NotifyConfig(object):
-    """Server settings loaded from environment variables."""
+    """Server settings. Direct values take priority over environment variables."""
 
-    def __init__(self) -> None:
-        self.token = os.environ.get("NOTIFY_TOKEN", "")
-        self.backend = os.environ.get("NOTIFY_BACKEND", "mail_client")
-        self.mail_client = os.environ.get("NOTIFY_MAIL_CLIENT", "mail")
-        self.mail_to = os.environ.get("MAIL_TO", "")
-        self.smtp_host = os.environ.get("SMTP_HOST", "")
-        self.smtp_port = int(os.environ.get("SMTP_PORT", "587"))
-        self.smtp_user = os.environ.get("SMTP_USER", "")
-        self.smtp_password = os.environ.get("SMTP_PASSWORD", "")
+    def __init__(
+        self,
+        token: Optional[str] = None,
+        backend: Optional[str] = None,
+        mail_client: Optional[str] = None,
+        mail_to: Optional[str] = None,
+        smtp_host: Optional[str] = None,
+        smtp_port: Optional[int] = None,
+        smtp_user: Optional[str] = None,
+        smtp_password: Optional[str] = None,
+    ) -> None:
+        if token is None:
+            token = os.environ.get("NOTIFY_TOKEN", "")
+        if backend is None:
+            backend = os.environ.get("NOTIFY_BACKEND", "mail_client")
+        if mail_client is None:
+            mail_client = os.environ.get("NOTIFY_MAIL_CLIENT", "mail")
+        if mail_to is None:
+            mail_to = os.environ.get("MAIL_TO", "")
+        if smtp_host is None:
+            smtp_host = os.environ.get("SMTP_HOST", "")
+        if smtp_port is None:
+            smtp_port = int(os.environ.get("SMTP_PORT", "587"))
+        if smtp_user is None:
+            smtp_user = os.environ.get("SMTP_USER", "")
+        if smtp_password is None:
+            smtp_password = os.environ.get("SMTP_PASSWORD", "")
+
+        self.token = token
+        self.backend = backend
+        self.mail_client = mail_client
+        self.mail_to = mail_to
+        self.smtp_host = smtp_host
+        self.smtp_port = smtp_port
+        self.smtp_user = smtp_user
+        self.smtp_password = smtp_password
 
     def validate_common(self) -> None:
         if self.token == "":
@@ -61,6 +89,8 @@ class NotifyConfig(object):
 
 
 def get_config() -> NotifyConfig:
+    if _server_config is not None:
+        return _server_config
     return NotifyConfig()
 
 
@@ -178,9 +208,20 @@ def receive_notify(
     }
 
 
-def main() -> None:
-    host = os.environ.get("NOTIFY_HOST", DEFAULT_HOST)
-    port = int(os.environ.get("NOTIFY_PORT", str(DEFAULT_PORT)))
+def main(
+    config: Optional[NotifyConfig] = None,
+    host: Optional[str] = None,
+    port: Optional[int] = None,
+) -> None:
+    global _server_config
+
+    _server_config = config
+
+    if host is None:
+        host = os.environ.get("NOTIFY_HOST", DEFAULT_HOST)
+    if port is None:
+        port = int(os.environ.get("NOTIFY_PORT", str(DEFAULT_PORT)))
+
     uvicorn.run(app, host=host, port=port)
 
 
