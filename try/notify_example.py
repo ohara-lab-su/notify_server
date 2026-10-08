@@ -8,11 +8,11 @@ configure(
     token="shared-token",
 )
 
-notify("Calculation started")
+# notify("Calculation started")
 
 # calculation()
 
-# notify(
-#     "Calculation finished",
-#     "Calculation completed successfully.",
-# )
+notify(
+    "Calculation finished",
+    "Calculation completed successfully.",
+)

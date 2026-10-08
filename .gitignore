@@ -3,6 +3,8 @@
 !POSCAR
 !INCAR
 
+try/
+
 __pycache__/
 build/
 work/

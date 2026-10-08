@@ -26,4 +26,5 @@ windows-outlook = [
 notify-server = "notify.server:main"
 
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["notify*"]
