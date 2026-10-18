@@ -3,8 +3,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "notify"
-version = "0.1.1"
+name = "notify-server"
+version = "0.1.2"
+
 description = "Lightweight REST notification client/server for calculation scripts"
 readme = "README.ja.md"
 requires-python = ">=3.8"
