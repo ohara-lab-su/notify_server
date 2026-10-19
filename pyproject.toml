@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "notify-server"
+name = "notify-frame"
 version = "0.1.2"
 
 description = "Lightweight REST notification client/server for calculation scripts"
