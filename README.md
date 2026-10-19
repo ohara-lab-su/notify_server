@@ -1,5 +1,9 @@
 # notify
 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.en.md)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.md)
+
+
 計算機から自分の PC 上の通知サーバーへ REST API で通知要求を送り、PC
 側からメールを送信する Python パッケージです。
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "notify-frame"
-version = "0.1.2"
+version = "0.1.3"
 
 description = "Lightweight REST notification client/server for calculation scripts"
 readme = "README.ja.md"
