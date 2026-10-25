@@ -1,27 +1,21 @@
 # notify
 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.en.md)
-[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.md)
+[![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.ja.md)
 
+A Python package that sends notification requests from a computing machine to a notification server running on your PC via a REST API. The PC then sends an email.
 
-計算機から自分の PC 上の通知サーバーへ REST API で通知要求を送り、PC
-側からメールを送信する Python パッケージです。
-
-計算機側にはメールアカウント、SMTP
-パスワード、アプリパスワードを置きません。メール送信は PC
-側だけで行います。
+No email account credentials, SMTP passwords, or app passwords are stored on the computing machine. Email is sent exclusively from the PC.
 
 ## v0.1.0
 
-v0.1.0 では、計算スクリプトから通知を簡単に呼び出せるように
-`configure()` を追加しました。また、サーバー設定を環境変数だけでなく
-`NotifyConfig` へ直接指定できるようにしました。
+Version 0.1.0 introduces `configure()` to make it easier to send notifications from calculation scripts. Server settings can also be passed directly to `NotifyConfig`, rather than being supplied only through environment variables.
 
-### 計算機側
+### Computing machine
 
-最初に一度だけ通知サーバーを設定します。
+Configure the notification server once before sending notifications.
 
-``` python
+```python
 from notify import configure, notify
 
 configure(
@@ -39,27 +33,23 @@ notify(
 )
 ```
 
-`configure()` で設定した値は、その後の `notify()`
-で既定値として使用されます。
+Values set with `configure()` are used as defaults by subsequent calls to `notify()`.
 
-`notify()` は成功時に `True`、失敗時に `False`
-を返します。デフォルトでは、サーバー停止、通信不能、timeout、HTTP
-エラー、設定不足などが発生しても例外を計算側へ伝播しません。
+`notify()` returns `True` on success and `False` on failure. By default, failures such as a stopped server, connection problems, timeouts, HTTP errors, or missing configuration do not propagate exceptions to the calculation script.
 
-通知失敗を例外として扱う場合だけ `strict=True` を指定します。
+Specify `strict=True` only when notification failures should raise exceptions.
 
-``` python
+```python
 notify("Calculation finished", strict=True)
 ```
 
-`configure()` を使用せず、従来どおり `NOTIFY_SERVER_URL` と
-`NOTIFY_TOKEN` の環境変数を使用することもできます。
+You can also continue using the `NOTIFY_SERVER_URL` and `NOTIFY_TOKEN` environment variables without calling `configure()`.
 
-### PC 側サーバー
+### PC-side server
 
-サーバー設定は `NotifyConfig` へ直接渡せます。
+Server settings can be passed directly to `NotifyConfig`.
 
-``` python
+```python
 from notify.server import NotifyConfig, main
 
 config = NotifyConfig(
@@ -76,17 +66,15 @@ main(
 )
 ```
 
-`NotifyConfig`
-に値を指定しなかった項目については、従来どおり環境変数が使用されます。
+For fields not explicitly specified in `NotifyConfig`, the corresponding environment variables are used, as before.
 
-`main()` の `host` / `port` を省略した場合も、`NOTIFY_HOST` /
-`NOTIFY_PORT` を参照し、未設定なら `127.0.0.1:8000` を使用します。
+If `host` and `port` are omitted from `main()`, the server uses `NOTIFY_HOST` and `NOTIFY_PORT`. If these are also unset, it defaults to `127.0.0.1:8000`.
 
-## 通知方式
+## Notification methods
 
 ### macOS Mail.app
 
-``` python
+```python
 config = NotifyConfig(
     token="shared-token",
     backend="mail_client",
@@ -95,11 +83,11 @@ config = NotifyConfig(
 )
 ```
 
-AppleScript で macOS Mail.app を操作してメールを送信します。
+Emails are sent by controlling macOS Mail.app through AppleScript.
 
 ### Microsoft Outlook
 
-``` python
+```python
 config = NotifyConfig(
     token="shared-token",
     backend="mail_client",
@@ -108,12 +96,11 @@ config = NotifyConfig(
 )
 ```
 
-macOS では AppleScript、Windows では COM (`pywin32`) を使用して
-Microsoft Outlook を操作します。
+Microsoft Outlook is controlled through AppleScript on macOS and COM (`pywin32`) on Windows.
 
 ### SMTP
 
-``` python
+```python
 config = NotifyConfig(
     token="shared-token",
     backend="smtp",
@@ -125,14 +112,13 @@ config = NotifyConfig(
 )
 ```
 
-SMTP は STARTTLS と SMTP 認証を使用します。
+The SMTP backend uses STARTTLS and SMTP authentication.
 
-## Shell スクリプト
+## Shell scripts
 
-Shell から使用する場合は、従来どおり `NOTIFY_SERVER_URL` と
-`NOTIFY_TOKEN` を環境変数で与えれば `python -c` から呼び出せます。
+When calling notifications from a shell script, set `NOTIFY_SERVER_URL` and `NOTIFY_TOKEN` as environment variables and invoke the package through `python -c`, as before.
 
-``` bash
+```bash
 if ./run_calc.sh; then
     python -c 'from notify import notify; notify("OK", "Calculation finished successfully.")'
 else
@@ -142,19 +128,19 @@ else
 fi
 ```
 
-デフォルトでは通知失敗が計算コマンドの終了状態へ影響しません。
+By default, notification failures do not affect the exit status of the calculation command.
 
 ## REST API
 
-REST API は従来と同じです。
+The REST API remains unchanged.
 
-``` text
+```text
 POST /notify
 ```
 
 JSON:
 
-``` json
+```json
 {
   "title": "OK",
   "body": "Calculation finished successfully."
@@ -163,15 +149,15 @@ JSON:
 
 HTTP header:
 
-``` text
+```text
 X-Notify-Token: shared-token
 ```
 
-## サーバー設定項目
+## Server configuration options
 
-`NotifyConfig` で直接指定できる項目は次のとおりです。
+The following fields can be set directly in `NotifyConfig`:
 
-``` text
+```text
 token
 backend
 mail_client
@@ -182,9 +168,9 @@ smtp_user
 smtp_password
 ```
 
-対応する従来の環境変数も使用できます。
+The corresponding existing environment variables are also supported:
 
-``` text
+```text
 NOTIFY_TOKEN
 NOTIFY_BACKEND
 NOTIFY_MAIL_CLIENT
@@ -197,14 +183,10 @@ NOTIFY_HOST
 NOTIFY_PORT
 ```
 
-直接指定した値は環境変数より優先されます。
+Explicitly supplied values take precedence over environment variables.
 
-## セキュリティ
+## Security
 
-計算機側に必要なのは通知サーバー URL
-と共有トークンだけです。メールアカウントや SMTP 認証情報は PC
-側に置きます。
+The computing machine requires only the notification server URL and a shared token. Email account credentials and SMTP authentication information remain on the PC.
 
-REST
-サーバーをインターネットへ直接公開することは前提としていません。外部ネットワークから利用する場合は、VPN、SSH
-トンネル、ファイアウォール、HTTPS 等を別途使用してください。
+The REST server is not intended to be exposed directly to the internet. For access from external networks, use additional protections such as a VPN, SSH tunnel, firewall, or HTTPS.
