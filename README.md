@@ -3,6 +3,10 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.md)
 [![ja](https://img.shields.io/badge/lang-ja-yellow.svg)](https://github.com/ohara-lab-su/notify_server/blob/main/README.ja.md)
 
+[![GitHub](https://img.shields.io/badge/GitHub-ohara--lab--su%2Fnotify_server-181717?logo=github)](https://github.com/ohara-lab-su/notify_server/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Documentation-222222?logo=githubpages&logoColor=white)](https://ohara-lab-su.github.io/notify_server/en/)
+[![Ohara Lab](https://img.shields.io/badge/Ohara%20Lab-Home-4B5563?logo=homeassistant&logoColor=white)](https://ohara-lab-su.github.io/index.en.html)
+
 A Python package that sends notification requests from a computing machine to a notification server running on your PC via a REST API. The PC then sends an email.
 
 No email account credentials, SMTP passwords, or app passwords are stored on the computing machine. Email is sent exclusively from the PC.
