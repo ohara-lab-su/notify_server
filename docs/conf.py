@@ -3,11 +3,12 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 project = "notify-frame"
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError, version as package_version
 try:
-    release = version("notify-frame")
+    release = package_version("notify-frame")
 except PackageNotFoundError:
     release = "unknown"
+version = release
 language = os.environ.get("DOC_LANGUAGE", "en")
 root_doc = "index"
 source_suffix = {".md": "markdown", ".rst": "restructuredtext"}
