@@ -1,31 +1,28 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "notify-frame"
-version = "0.1.3"
-
+version = "0.1.4"
 description = "Lightweight REST notification client/server for calculation scripts"
 readme = "README.ja.md"
 requires-python = ">=3.8"
 dependencies = [
     "requests>=2.20",
-]
-
-[project.optional-dependencies]
-server = [
     "fastapi>=0.100",
     "pydantic>=2.0",
     "uvicorn>=0.20",
-]
-windows-outlook = [
     "pywin32>=300; platform_system == 'Windows'",
 ]
 
 [project.scripts]
 notify-server = "notify.server:main"
+notify_server = "notify.install:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["notify*"]
+
+[tool.setuptools.data-files]
+"share/notify-frame/scripts" = ["scripts/notify.sh", "scripts/notify_example.py", "scripts/server_example.py"]
